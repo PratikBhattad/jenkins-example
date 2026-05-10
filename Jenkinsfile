@@ -14,9 +14,14 @@ pipeline {
             }
         }
 
-        stage ('Deployment Stage') {
+
+        stage ('Package & Save Artifact') {
             steps {
-                sh 'mvn deploy'
+                // 1. 'package' builds the .jar file
+                sh 'mvn clean package'
+                
+                // 2. This tells Jenkins to save the .jar file so you can download it from the UI
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
